@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 const isLocal = false;
 
-const API_URL = !isLocal
+const API_URL = isLocal
   ? "http://localhost:3333/api/v1/users/signup"
   : "https://tbc-be-5g49.onrender.com/api/v1/users/";
 
