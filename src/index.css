@@ -1,0 +1,67 @@
+@import url(https://db.onlinewebfonts.com/c/5da49843f66caf14799662bd12aa55a2?family=Dream+Avenue);
+
+body {
+  background-color: black;
+}
+
+* {
+  color: #ffffff;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.signup * {
+  color: black !important;
+}
+.navbar {
+  padding: 2rem 5rem 2rem 5rem;
+}
+
+.navbar .nav-item .nav-link,
+.navbar .call-to-action .btn {
+  font-weight: 200;
+  letter-spacing: 0.2rem;
+}
+
+.navbar .nav-link.active {
+  border-bottom: solid #7b967a !important;
+  color: #ffffff;
+}
+
+.navbar .nav-item a {
+  color: #ffffff;
+}
+
+.carousel-caption {
+  max-width: fit-content;
+  position: absolute;
+  top: 150px;
+  right: 0;
+  left: 1150px;
+}
+
+.carousel-caption .heading {
+  font-family: "Dream Avenue";
+  font-size: 5rem;
+  max-width: 10rem;
+}
+.carousel-caption p {
+  text-wrap: nowrap;
+  max-width: 10rem;
+}
+
+.divider:after,
+.divider:before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #eee;
+}
+.h-custom {
+  height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+  .h-custom {
+    height: 100%;
+  }
+}
