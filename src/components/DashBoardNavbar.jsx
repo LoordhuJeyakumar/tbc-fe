@@ -1,10 +1,13 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
-function TopNavbar() {
+function DashBoardNavbar() {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
 
-  const userDetails = JSON.parse(localStorage.getItem("user"));
-  console.log(userDetails);
   return (
     <header className="navbar-box fixed-top ">
       <nav className="navbar navbar-expand-lg">
@@ -49,12 +52,12 @@ function TopNavbar() {
               </li>
             </ul>
             <div className="call-to-action">
-              <Link
-                to={"/login"}
+              <button
+                onClick={handleLogout}
                 className="btn text-light d-inline-flex justify-content-evenly align-items-center"
               >
-                <i className="fa-solid fa-circle-user"></i> &nbsp; LOGIN
-              </Link>
+                <i class="fa-solid fa-right-from-bracket"></i> &nbsp; LOGOUT
+              </button>
               <button className="btn text-light d-inline-flex justify-content-evenly align-items-center">
                 <i className="fa-solid fa-basket-shopping"></i> &nbsp;CART
               </button>
@@ -66,4 +69,4 @@ function TopNavbar() {
   );
 }
 
-export default TopNavbar;
+export default DashBoardNavbar;

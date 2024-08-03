@@ -1,7 +1,65 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
+
+  const hnadleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "loginEmail") {
+      setEmail(value);
+    } else if (name === "loginPassword") {
+      setPassword(value);
+    }
+  };
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:3333/api/v1/users/signin",
+        {
+          email,
+          password,
+        }
+      );
+      console.log(response);
+      if (response.status == 200) {
+        localStorage.setItem("accessToken", response.data.data.accessToken);
+        localStorage.setItem(
+          "user",
+          JSON.stringify(response.data.data.loggedInUser)
+        );
+
+        setMessage(response.data.message);
+        setSuccess(true);
+        setLoading(false);
+        resetState();
+        navigate("/redirect");
+      }
+    } catch (error) {
+      setError(error.response.data.message);
+      setLoading(false);
+      console.log(error);
+      toast.error(error.response.data.message);
+      resetState();
+    }
+  };
+
+  const resetState = () => {
+    setEmail("");
+    setPassword("");
+  };
+
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <section className="">
@@ -14,8 +72,23 @@ function Login() {
                 alt="Sample image"
               />
             </div>
+
             <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-              <form>
+              <div>
+                {error && (
+                  <div className="alert alert-danger" role="alert">
+                    {error}
+                  </div>
+                )}
+              </div>
+              <div>
+                {success && (
+                  <div className="alert alert-success" role="alert">
+                    {message}
+                  </div>
+                )}
+              </div>
+              <form onSubmit={handleLoginSubmit}>
                 {/* <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                   <p className="lead fw-normal mb-0 me-3">Sign in with</p>
                   <button
@@ -53,11 +126,16 @@ function Login() {
                 <div data-mdb-input-init className="form-outline mb-4">
                   <input
                     type="email"
-                    id="form3Example3"
+                    id="login-email-input"
                     className="form-control form-control-lg"
                     placeholder="Enter a valid email address"
+                    required
+                    autoComplete="email"
+                    value={email}
+                    name="loginEmail"
+                    onChange={hnadleInputChange}
                   />
-                  <label className="form-label" htmlFor="form3Example3">
+                  <label className="form-label" htmlFor="login-email-input">
                     Email address
                   </label>
                 </div>
@@ -65,11 +143,16 @@ function Login() {
                 <div data-mdb-input-init className="form-outline mb-3">
                   <input
                     type="password"
-                    id="form3Example4"
+                    id="login-password-input"
                     className="form-control form-control-lg"
                     placeholder="Enter password"
+                    required
+                    autoComplete="password"
+                    value={password}
+                    name="loginPassword"
+                    onChange={hnadleInputChange}
                   />
-                  <label className="form-label" htmlFor="form3Example4">
+                  <label className="form-label" htmlFor="login-password-input">
                     Password
                   </label>
                 </div>
@@ -91,13 +174,17 @@ function Login() {
 
                 <div className="text-center text-lg-start mt-4 pt-2">
                   <button
-                    type="button"
+                    type="submit"
                     data-mdb-button-init
                     data-mdb-ripple-init
                     className="btn btn-primary btn-lg"
                     style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
                   >
                     Login
+                    <i className="fas fa-long-arrow-alt-right ms-2"></i>
+                    {loading && (
+                      <span className="spinner-border spinner-border-sm ms-2"></span>
+                    )}
                   </button>
                   <p className="small fw-bold mt-2 pt-1 mb-0">
                     Don't have an account?{" "}

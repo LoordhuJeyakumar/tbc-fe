@@ -9,6 +9,8 @@ import Craft from "./src/pages/Craft";
 import Collection from "./src/pages/Collection";
 import Contact from "./src/pages/Contact";
 import AccountVerification from "./src/pages/AccountVerification";
+import Redirect from "./src/pages/Redirect";
+import Dashboard from "./src/pages/Dashboard";
 
 function AppRoutes() {
   return (
@@ -27,6 +29,9 @@ function AppRoutes() {
           path="/users/:userId/:verifyToken"
           element={<AccountVerification />}
         />
+
+        <Route path="/redirect" element={<Redirect />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );
