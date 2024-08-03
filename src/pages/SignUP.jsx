@@ -3,6 +3,12 @@ import axios from "axios";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
+const isLocal = false;
+
+const API_URL = !isLocal
+  ? "http://localhost:3333/api/v1/users/signup"
+  : "https://tbc-be-5g49.onrender.com/api/v1/users/";
+
 function SignUP() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,14 +29,11 @@ function SignUP() {
       return;
     }
     try {
-      const response = await axios.post(
-        "http://localhost:3333/api/v1/users/signup",
-        {
-          name,
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(API_URL, {
+        name,
+        email,
+        password,
+      });
       console.log(response);
       if (response.status == 201) {
         toast.success(response.data.message);

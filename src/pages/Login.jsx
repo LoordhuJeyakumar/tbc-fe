@@ -3,6 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const isLocal = false;
+
+const API_URL = !isLocal
+  ? "http://localhost:3333/api/v1/users/signup"
+  : "https://tbc-be-5g49.onrender.com/api/v1/users/";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,13 +31,10 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:3333/api/v1/users/signin",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(API_URL, {
+        email,
+        password,
+      });
       console.log(response);
       if (response.status == 200) {
         localStorage.setItem("accessToken", response.data.data.accessToken);
